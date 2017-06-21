@@ -1,0 +1,22 @@
+<html>
+    <body onload="api()">
+        <div id="weather"></div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            function api(){
+                var api_key = '44b78ac274e9d94337e6620489fdcdbe';
+
+                var url = $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin,IE&units=metric&APPID=" + api_key, function(data){
+                console.log("success");
+
+            document.getElementById("weather").style.display = "inline-block";
+            document.getElementById("weather").innerHTML = '<h1>Current Weather in Dublin</h1>' +
+                '<p>' + "Temperature: " + data.main.temp + '&deg;C' + '</p>'
+                + '<p>' + "Humidity: " + data.main.humidity + '%' + '</p>'
+                + '<p>' + "Wind Speed: " + data.wind.speed + 'km/h' + '</p>'
+                + '<p>' + "<img src=\"http://openweathermap.org/img/w/" + data.weather[0].icon + ".png\">" + '</p>';
+            })
+        }
+        </script>
+    </body>
+</html>
