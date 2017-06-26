@@ -1,7 +1,75 @@
 <html>
+    <head>
+        <title>Dublin Bus Dynamic Time Application</title>
+        <link rel="stylesheet" type="text/css" href="weather.css">
+    </head>
     <body onload="api()">
-        <div id="weather"></div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <!--Header-->
+        <header id="header">
+            <h1>Dublin Bus Dynamic Time Application</h1>
+        </header>
+         <!--Wrapper for Page Content-->
+        <div id="wrapper">
+            <!--Map-->
+            <div id="map"></div> 
+            <!--Weather Div to Display Live Weather Data-->
+            <div id="weather"></div>
+            <!--Select boxes for data values-->
+            <div id="valueboxes">
+                <select>
+                    <option>Cloudy</option>
+                    <option>Rainy</option>
+                    <option>Sunny</option>
+                </select>
+                <select>
+                    <option>07.00</option>
+                    <option>08.00</option>
+                    <option>09.00</option>
+                    <option>10.00</option>
+                    <option>11.00</option>
+                    <option>12.00</option>
+                    <option>13.00</option>
+                    <option>14.00</option>
+                    <option>15.00</option>
+                    <option>16.00</option>
+                    <option>17.00</option>
+                    <option>18.00</option>
+                    <option>19.00</option>
+                    <option>20.00</option>
+                    <option>21.00</option>
+                    <option>22.00</option>
+                    <option>23.00</option>
+                </select>
+                <select>
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                    <option>Sunday</option>
+                </select>
+                <select>
+                    <option>Route</option>
+                </select>
+                <select>
+                    <option>Origin</option>
+                </select>
+                <select>
+                    <option>Destination</option>
+                </select>
+            </div>
+            <!--Footer-->
+            <footer id="footer">
+                <p>Designed by Team 2 - Team Undecided</p>
+                <p>Team Members: Davy Shaw, Aongus Bates, Claudia Kinsella, Chen Zeng</p>
+            </footer>
+        </div> 
+    </body>
+    
+    <!--Scripts for Webpage-->
+    <!--Script for Live Weather Data-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <script type="text/javascript">
             function api(){
                 var api_key = '44b78ac274e9d94337e6620489fdcdbe';
@@ -18,5 +86,17 @@
             })
         }
         </script>
-    </body>
+    
+    <!--Google Map API Script-->
+    <script>
+        function myMap() {
+            var mapLocale= {
+                center:new google.maps.LatLng(53.345300, -6.275769),
+                zoom:11,
+            };
+            var map=new google.maps.Map(document.getElementById("map"),mapLocale);
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALcdMW4k2eJRlUPNZ8YpR9GYNhyF7hmx8&callback=myMap"></script>
+
 </html>

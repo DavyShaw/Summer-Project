@@ -1,0 +1,48 @@
+header {
+    margin: 0;
+    padding: 0;
+    background-color: yellow;
+    color: black;
+    height: 150px;
+    text-align: center;
+}
+
+header h1 {
+    padding-top: 50px;
+}
+
+body {
+    margin: 0;
+}
+
+#wrapper {
+    width: 1200px;
+    margin: 0 auto;
+    overflow: auto;
+}
+
+#map {
+    width: 600px;
+    height: 450px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#weather {
+    font-size: 12pt;
+    display: inline-block;
+}
+
+#valueboxes {
+    margin-top: 100px;
+}
+
+#footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: yellow;
+    text-align: center;
+}
