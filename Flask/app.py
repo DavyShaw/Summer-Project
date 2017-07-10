@@ -1,4 +1,4 @@
-from flask import Flask, render_tmeplate, g, jsonify
+from flask import Flask, render_template, g, jsonify
 from jinja2 import Template
 from sqlalchemy import create_engine
 import MySQLdb
