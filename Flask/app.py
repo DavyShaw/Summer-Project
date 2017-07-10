@@ -40,31 +40,31 @@ def get_route():
         data.append(dict(row))
     return jsonify(available=data)
 
-@app.route("/origin/<int:stopnum")
-def route_ori(stopnum):
-    engine = get_db()
-    sql = """SELECT StopID FROM dublinbus WHERE stopnum = {};""".format(stopnum)
-    rows = engine.execute(sql).fetchall()
-    stopnum = jsonify(stations=[dict(row.items()) for row in rows])
-    return stations
+# @app.route("/origin/<int:stopnum")
+# def route_ori(stopnum):
+#     engine = get_db()
+#     sql = """SELECT StopID FROM dublinbus WHERE stopnum = {};""".format(stopnum)
+#     rows = engine.execute(sql).fetchall()
+#     stopnum = jsonify(stations=[dict(row.items()) for row in rows])
+#     return stations
 
-@app.route("/destination/<int:stopnum")
-def route_dest(stopnum):
-    engine = get_db()
-    sql = """SELECT StopID FROM dublinbus WHERE stopnum = {};""".format(stopnum)
-    rows = engine.execute(sql).fetchall()
-    stopnum = jsonify(stations=[dict(row.items()) for row in rows])
-    return stations
+# @app.route("/destination/<int:stopnum")
+# def route_dest(stopnum):
+#     engine = get_db()
+#     sql = """SELECT StopID FROM dublinbus WHERE stopnum = {};""".format(stopnum)
+#     rows = engine.execute(sql).fetchall()
+#     stopnum = jsonify(stations=[dict(row.items()) for row in rows])
+#     return stations
 
-@app.route('/weather/<string:condition>')
-def get_weather(condition):
-    engine = get_db()
-    data = []
-    rows = engine.execute("SELECT precipitation, temperature FROM dublinbus WHERE weather = {};".format(condition))
-    for row in rows:
-        data.append(dict(row))
-    return jsonify(available=data)
+# @app.route('/weather/<string:condition>')
+# def get_weather(condition):
+#     engine = get_db()
+#     data = []
+#     rows = engine.execute("SELECT precipitation, temperature FROM dublinbus WHERE weather = {};".format(condition))
+#     for row in rows:
+#         data.append(dict(row))
+#     return jsonify(available=data)
     
 
 if __name__ == '__main__':
-    app.run(debug==True)
+    app.run(debug=True)
