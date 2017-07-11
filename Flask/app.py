@@ -2,6 +2,7 @@ from flask import Flask, render_template, g, jsonify
 from jinja2 import Template
 from sqlalchemy import create_engine
 import MySQLdb
+import json
 
 app = Flask(__name__)
 
@@ -28,8 +29,10 @@ def close_connection(exception):
         db.close()
         
 @app.route("/")
-def index():
-    return render_template('index.html')
+def main():
+    with open('templates/convertcsv.json') as data_file:    
+        json_file = json.load(data_file)
+    return render_template("index.html", json_file = json_file)
 
 @app.route("/route")
 def get_route():
