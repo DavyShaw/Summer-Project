@@ -2,6 +2,7 @@ from flask import Flask, render_template, g, jsonify
 from jinja2 import Template
 from sqlalchemy import create_engine
 import MySQLdb
+import json
 
 app = Flask(__name__)
 
@@ -28,8 +29,10 @@ def close_connection(exception):
         db.close()
         
 @app.route("/")
-def index():
-    return render_template('index.html')
+def main():
+    with open('templates/convertcsv.json') as data_file:    
+        json_file = json.load(data_file)
+    return render_template("index.html", json_file = json_file)
 
 @app.route("/route")
 def get_route():
@@ -40,7 +43,7 @@ def get_route():
         data.append(dict(row))
     return jsonify(available=data)
 
-@app.route("/origin/<int:stopnum")
+@app.route("/origin/<int:stopnum>")
 def route_ori(stopnum):
     engine = get_db()
     sql = """SELECT StopID FROM dublinbus WHERE stopnum = {};""".format(stopnum)
@@ -48,7 +51,7 @@ def route_ori(stopnum):
     stopnum = jsonify(stations=[dict(row.items()) for row in rows])
     return stations
 
-@app.route("/destination/<int:stopnum")
+@app.route("/destination/<int:stopnum>")
 def route_dest(stopnum):
     engine = get_db()
     sql = """SELECT StopID FROM dublinbus WHERE stopnum = {};""".format(stopnum)
@@ -67,4 +70,4 @@ def get_weather(condition):
     
 
 if __name__ == '__main__':
-    app.run(debug==True)
+    app.run(debug=True)
