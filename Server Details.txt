@@ -1,3 +1,0 @@
-Host: csi420-01-vm3.ucd.ie
-Username: csstudent
-Password: dublinbusucd
