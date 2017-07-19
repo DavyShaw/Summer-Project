@@ -1,62 +1,117 @@
 <html>
     <head>
-        <script src="convertcsv.json" ></script>
+        <title>Dublin Bus Dynamic Time Application</title>
+        <link rel="stylesheet" type="text/css" href="../static/index.css?q=549443444538743">
+<!--        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">-->
     </head>
-    <body>        
-        <select type="button" data-toggle="dropdown" id="routes">
-            <option disabled="disbaled" selected="selected">Choose route</option>
-        </select>
+    <body onload="api()">
+        <!--Header-->
+        <header id="header">
+            <h1>DB Predict</h1>
+        </header>
+         <!--Wrapper for Page Content-->
+        <div id="wrapper">
+            <!--Weather Div to Display Live Weather Data-->
+            <div id="weather"></div>
+            <!--Map-->
+            <div id="google-map"><p>Map goes here</p></div>
+            <!--Select boxes for data values-->
+            <div id="dropdowns">
+                <select type="button" data-toggle="dropdown" name="route" onclick="changeMap()">
+                    {% for n in json_file_routes.bus_routes %}
+                        <option value="{{ n.route_short_name }}"{% if loop.first %} SELECTED{% endif %}>{{ n.route_short_name }}</option>
+                    {% endfor %}
+                </select>
+                <select type="button" data-toggle="dropdown" name="origin">
+                    {% for m in json_file_stops.results %}
+                        <option value="{{ m.shortname + m.stopid}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid}}</option>
+                    {% endfor %}
+                </select>
+                <select type="button" data-toggle="dropdown" name="destination">
+<!--                    <option selected="selected">Choose Destination</option>-->
+                    {% for m in json_file_stops.results %}
+                        <option value="{{ m.shortname + m.stopid}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid}}</option>
+                    {% endfor %}
+                </select>
+                <select>
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                    <option>Sunday</option>
+                </select>
+                <select>
+                    <option>07.00</option>
+                    <option>08.00</option>
+                    <option>09.00</option>
+                    <option>10.00</option>
+                    <option>11.00</option>
+                    <option>12.00</option>
+                    <option>13.00</option>
+                    <option>14.00</option>
+                    <option>15.00</option>
+                    <option>16.00</option>
+                    <option>17.00</option>
+                    <option>18.00</option>
+                    <option>19.00</option>
+                    <option>20.00</option>
+                    <option>21.00</option>
+                    <option>22.00</option>
+                    <option>23.00</option>
+                </select>
+                <select>
+                    <option>Cloudy</option>
+                    <option>Rainy</option>
+                    <option>Sunny</option>
+                </select>
+            </div>
+            <!--Footer-->
+            <footer id="footer">
+                <p>Team Members: Davy Shaw, Aongus Bates, Claudia Kinsella, Chen Zeng</p>
+            </footer>
+        </div> 
     </body>
     
+    <!--Scripts for Webpage-->
+    <!--Script for Live Weather Data-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script type="text/javascript" src="convertcsv.json"></script>
+        <script type="text/javascript">
+            function api(){
+                var api_key = '44b78ac274e9d94337e6620489fdcdbe';
+                var url = $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin,IE&units=metric&APPID=" + api_key, function(data){
+                console.log("success");
+//            document.getElementById("weather").style.display = "inline-block";
+            document.getElementById("weather").innerHTML = '<p>Current Weather in Dublin</p>' +
+                '<p>' + "Temperature: " + data.main.temp + '&deg;C' + '</p>'
+                + '<p>' + "Humidity: " + data.main.humidity + '%' + '</p>'
+                + '<p>' + "Wind Speed: " + data.wind.speed + 'km/h' + '</p>'
+                + '<p>' + "<img src=\"http://openweathermap.org/img/w/" + data.weather[0].icon + ".png\">" + '</p>';
+            })
+        }
+        </script>
+    
+    <!--Google Map API Script-->
     <script>
-        
-    var jsonList = {
-    "bus_stops": [
- {
-   "stop_id": "8220DB000002",
-   "stop_name": "Parnell Square, Rotunda",
-   "stop_lat": 53.3522439241978,
-   "stop_lon": -6.26369319257185
- },
- {
-   "stop_id": "8220DB000003",
-   "stop_name": "Parnell Square, Rotunda",
-   "stop_lat": 53.3523081145137,
-   "stop_lon": -6.26378071577474
- },
- {
-   "stop_id": "8220DB000004",
-   "stop_name": "Parnell Square, Rotunda",
-   "stop_lat": 53.3525653119822,
-   "stop_lon": -6.26416083778913
- },
- {
-   "stop_id": "8220DB000006",
-   "stop_name": "Parnell Square, Rotunda",
-   "stop_lat": 53.3527401345352,
-   "stop_lon": -6.26443915559566
- },
- {
-   "stop_id": "8220DB000007",
-   "stop_name": "Parnell Square, Rotunda",
-   "stop_lat": 53.352831709423,
-   "stop_lon": -6.26455561279244
- },
- {
-   "stop_id": "8350DB007522",
-   "stop_name": "Boghall Road, Bray",
-   "stop_lat": 53.1887123211822,
-   "stop_lon": -6.12152645441743
- }]}
+        function myMap() {
+            var mapLocale= {
+                center:new google.maps.LatLng(53.345300, -6.275769),
+                zoom:11,
+            };
+            var map=new google.maps.Map(document.getElementById("google-map"),mapLocale);
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiubTHzeKWvkVLFSWQ1MY_7yNjizKQxbU&callback=myMap"></script>
+    
+    
+    
+<!-- Script to update map based on Route Selection -->
+    <script>
+        function changeMap(city) {
+        var c = coords[city].split(',');
+            map.setCenter(new google.maps.LatLng(c[0], c[1]));
+        }
+    </script>
 
-
-    $(document).ready(function(){
-      var listItems= "";
-      for (var i = 0; i < jsonList.bus_stops.length; i++){
-        listItems+= "<option value='" + jsonList.bus_stops[i].stop_name + "'>" + jsonList.bus_stops[i].stop_name + "</option>";
-      }
-      $("#routes").html(listItems);
-    });  </script>
 </html>
