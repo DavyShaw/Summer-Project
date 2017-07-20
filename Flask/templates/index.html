@@ -17,23 +17,24 @@
             <div id="google-map"><p>Map goes here</p></div>
             <!--Select boxes for data values-->
             <div id="dropdowns">
-                <select type="button" data-toggle="dropdown" name="route" onclick="changeMap()">
+                <form method="post" action="{{ url_for('routes') }}">
+                <select type="button" data-toggle="dropdown" name="chosenroute" onclick="changeMap()">
                     {% for n in json_file_routes.bus_routes %}
                         <option value="{{ n.route_short_name }}"{% if loop.first %} SELECTED{% endif %}>{{ n.route_short_name }}</option>
                     {% endfor %}
                 </select>
-                <select type="button" data-toggle="dropdown" name="origin">
+                <select type="button" data-toggle="dropdown" name="chosenorigin">
                     {% for m in json_file_stops.results %}
                         <option value="{{ m.shortname + m.stopid}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid}}</option>
                     {% endfor %}
                 </select>
-                <select type="button" data-toggle="dropdown" name="destination">
+                <select type="button" data-toggle="dropdown" name="chosendestination">
 <!--                    <option selected="selected">Choose Destination</option>-->
                     {% for m in json_file_stops.results %}
                         <option value="{{ m.shortname + m.stopid}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid}}</option>
                     {% endfor %}
                 </select>
-                <select>
+                <select name="chosenday">
                     <option>Monday</option>
                     <option>Tuesday</option>
                     <option>Wednesday</option>
@@ -42,7 +43,7 @@
                     <option>Saturday</option>
                     <option>Sunday</option>
                 </select>
-                <select>
+                <select name="chosentime">
                     <option>07.00</option>
                     <option>08.00</option>
                     <option>09.00</option>
@@ -61,11 +62,13 @@
                     <option>22.00</option>
                     <option>23.00</option>
                 </select>
-                <select>
+                <select name="chosenweather">
                     <option>Cloudy</option>
                     <option>Rainy</option>
                     <option>Sunny</option>
                 </select>
+                <input type="submit">
+                </form>
             </div>
             <!--Footer-->
             <footer id="footer">
@@ -108,8 +111,8 @@
     
 <!-- Script to update map based on Route Selection -->
     <script>
-        function changeMap(city) {
-        var c = coords[city].split(',');
+        function changeMap(route) {
+        var c = coords[route].split(',');
             map.setCenter(new google.maps.LatLng(c[0], c[1]));
         }
     </script>
