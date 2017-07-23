@@ -24,13 +24,13 @@ def get_db():
 
 @app.route("/")
 def main():
-    with open('static/dublinbus_routes.json') as data_file:    
+    with open('routes.json') as data_file:
         json_file_routes = json.load(data_file)
         
-    with open('static/routes.json') as data_file:
+    with open('routes.json') as data_file:
         json_routes = json.load(data_file)
         
-    with open('static/all_stops_and_routesDB.json') as data_file:
+    with open('routes_and_stops.json') as data_file:
         json_file_stops = json.load(data_file)
     
     return render_template("index.html", json_file_routes = json_file_routes, json_file_stops = json_file_stops, json_routes = json_routes)
@@ -44,13 +44,13 @@ def routes():
     chosentime = request.form.get('chosentime')
     chosenweather = request.form.get('chosenweather')
     
-    with open('static/dublinbus_routes.json') as data_file:    
+    with open('static/routes.json') as data_file:
         json_file_routes = json.load(data_file)
         
     with open('static/routes.json') as data_file:
         json_routes = json.load(data_file)
         
-    with open('static/all_stops_and_routesDB.json') as data_file:
+    with open('static/routes_and_stops.json') as data_file:
         json_file_stops = json.load(data_file)
     
     return render_template("display.html", json_file_routes = json_file_routes, json_file_stops = json_file_stops, json_routes = json_routes, chosenroute = chosenroute)
