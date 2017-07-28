@@ -18,30 +18,29 @@
             <!--Select boxes for data values-->
             <div id="dropdowns">
                 <form method="post" action="{{ url_for('routes') }}">
-                <select type="button" data-toggle="dropdown" name="chosenroute" onclick="changeMap()">
+                <select type="button" data-toggle="dropdown" name="chosenroute" id="chosenroute" onclick="changeMap()">
                     {% for n in json_routes %}
-                        <option value="{{ n.route_id + n.route_name}}"{% if loop.first %} SELECTED{% endif %}>{{ n.route_id + ": " + n.route_name}}</option>
+                        <option id='route_id' value="{{ n.route_id + n.route_name}}"{% if loop.first %} SELECTED{% endif %}>{{ n.route_id + ": " + n.route_name}}</option>
                     {% endfor %}
                 </select>
                 <select type="button" data-toggle="dropdown" name="chosenorigin">
-                    {% for m in json_file_stops.results %}
-                        <option value="{{ m.shortname + m.stopid}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid}}</option>
+                    {% for m in json_file_stops %}
+                        <option value="{{ m.shortname + m.stopid|string}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid|string}}</option>
                     {% endfor %}
                 </select>
                 <select type="button" data-toggle="dropdown" name="chosendestination">
-<!--                    <option selected="selected">Choose Destination</option>-->
-                    {% for m in json_file_stops.results %}
-                        <option value="{{ m.shortname + m.stopid}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid}}</option>
+                    {% for m in json_file_stops %}
+                        <option value="{{ m.stopid|string + m.shortname}}"{% if loop.first %} SELECTED{% endif %}>{{ m.shortname + " - Stop No. " + m.stopid|string}}</option>
                     {% endfor %}
                 </select>
                 <select name="chosenday">
-                    <option>Monday</option>
-                    <option>Tuesday</option>
-                    <option>Wednesday</option>
-                    <option>Thursday</option>
-                    <option>Friday</option>
-                    <option>Saturday</option>
-                    <option>Sunday</option>
+                    <option id='0'>0: Monday</option>
+                    <option id='1'>1: Tuesday</option>
+                    <option id='2'>2: Wednesday</option>
+                    <option id='3'>3: Thursday</option>
+                    <option id='4'>4: Friday</option>
+                    <option id='5'>5: Saturday</option>
+                    <option id='6'>6: Sunday</option>
                 </select>
                 <select name="chosentime">
                     <option>07.00</option>
@@ -62,11 +61,24 @@
                     <option>22.00</option>
                     <option>23.00</option>
                 </select>
-                <select name="chosenweather">
-                    <option>Cloudy</option>
-                    <option>Rainy</option>
-                    <option>Sunny</option>
+                <select name="chosentemp">
+                    <option>12: Rainy</option>
+                    <option>2: Sunny</option>
+                    <option>0</option>
                 </select>
+                <select name="chosenhumid">
+                    <option>19: Rainy</option>
+                    <option>2: Sunny</option>
+                    <option>0</option>
+                </select>
+<!--
+                <select name="chosenpres">
+                    <option>65: Rainy</option>
+                    <option>2: Sunny</option>
+                    <option>0</option>
+                </select>
+-->
+                    
                 <input type="submit">
                 </form>
             </div>
@@ -106,6 +118,30 @@
                 zoom:11,
             };
             var map=new google.maps.Map(document.getElementById("google-map"),mapLocale);
+               
+        $.getJSON('../static/routes_and_stops.json', function(data){
+        for (var i = 0; i < data.length; i++) {
+        var item = data[i];
+
+        var markerLatlng = new google.maps.LatLng(item.latitude, item.longitude);
+        var marker = new google.maps.Marker({
+            position: markerLatlng
+        });
+        marker.item = item; // store information of each item in marker
+        marker.setMap(map); // where `map` is the instance of Google Map
+        google.maps.event.addListener(marker, "click", function(mark) {
+            // retrieve information using `this.item` and create dynamic HTML to show it. 
+            // this.item.Post.datetime, this.item.Post.content etc.
+    });
+
+}
+        
+    });
+//            $("#chosenroute").change(function() {
+//  var lat = $("#dropdown route_id:selected").data('latitude');
+//  var lng = $("#dropdown route_id:selected").data('longitude');
+//  changeLoc(latitude, longitude);
+//});
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiubTHzeKWvkVLFSWQ1MY_7yNjizKQxbU&callback=myMap"></script>
