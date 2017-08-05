@@ -1,10 +1,10 @@
 <html>
     <head>
         <title>Dublin Bus Dynamic Time Application</title>
-        <link rel="stylesheet" type="text/css" href="../static/index.css?q=54445658743">
+        <link rel="stylesheet" type="text/css" href="../static/index.css?q=544443">
 <!--        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">-->
     </head>
-    <body onload="api()">
+    <body onload="api(); api2();">
         <!--Header-->
         <header id="header">
             <h1>DB Predict</h1>
@@ -18,7 +18,7 @@
             <!--Select boxes for data values-->
             <div id="dropdowns">
                 <form method="post" action="{{ url_for('routes') }}">
-                <select type="button" data-toggle="dropdown" name="chosenroute" id="chosenroute" onclick="changeMap()">
+                <select type="button" data-toggle="dropdown" name="chosenroute" id="chosenroute" onClick="changeMap()">
                     {% for n in json_routes %}
                         <option id='route_id' value="{{ n.route_id + n.route_name}}"{% if loop.first %} SELECTED{% endif %}>{{ n.route_id + ": " + n.route_name}}</option>
                     {% endfor %}
@@ -61,26 +61,27 @@
                     <option>22.00</option>
                     <option>23.00</option>
                 </select>
-                <select name="chosentemp">
-                    <option>12: Rainy</option>
-                    <option>2: Sunny</option>
-                    <option>0</option>
-                </select>
-                <select name="chosenhumid">
-                    <option>19: Rainy</option>
-                    <option>2: Sunny</option>
-                    <option>0</option>
-                </select>
-<!--
-                <select name="chosenpres">
-                    <option>65: Rainy</option>
-                    <option>2: Sunny</option>
-                    <option>0</option>
-                </select>
--->
+                <div id='weatherfeatures' style="visibility: hidden; display:none;">
+                    <h5> Current Weather in Dublin </h5>
+                    <p>Temperature</p>
+                    <select name="chosentemp" id="chosentemp">
+                    </select>
+                    <p>Humidity</p>
+                    <select name="chosenhumid" id="chosenhumid">
+                    </select>
+                    <select name="chosenpres" id="chosenpres">
+                    </select>
+                </div>
                     
                 <input type="submit">
                 </form>
+                
+                
+                
+            <div id="twitterfeed">
+                <a class="twitter-timeline" href="https://twitter.com/aaroadwatch" height="500">Tweets by aaroadwatch</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+                
             </div>
             <div class="container">
             {% block content %}{% endblock %}
@@ -91,34 +92,109 @@
             </footer>
         </div> 
     </body>
+   
     
-    <!--Scripts for Webpage-->
     <!--Script for Live Weather Data-->
+        <!--    API 1    -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <script type="text/javascript">
             function api(){
                 var api_key = '44b78ac274e9d94337e6620489fdcdbe';
                 var url = $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin,IE&units=metric&APPID=" + api_key, function(data){
-                console.log("success");
-//            document.getElementById("weather").style.display = "inline-block";
             document.getElementById("weather").innerHTML = '<p>Current Weather in Dublin</p>' +
                 '<p>' + "Temperature: " + data.main.temp + '&deg;C' + '</p>'
                 + '<p>' + "Humidity: " + data.main.humidity + '%' + '</p>'
-                + '<p>' + "Wind Speed: " + data.wind.speed + 'km/h' + '</p>'
+                + '<p>' + "Pressure: " + data.main.pressure + 'hPa' + '</p>'
                 + '<p>' + "<img src=\"http://openweathermap.org/img/w/" + data.weather[0].icon + ".png\">" + '</p>';
             })
         }
         </script>
     
+        <!--    API 2   -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            function api2(){
+                var api_key = '44b78ac274e9d94337e6620489fdcdbe';
+                var url = $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin,IE&units=metric&APPID=" + api_key, function(data){
+                    document.getElementById("chosentemp").innerHTML = '<option>'+ data.main.temp + '</option>';
+                    document.getElementById("chosenhumid").innerHTML = '<option>'+ data.main.humidity + '</option>';
+                    document.getElementById("chosenpres").innerHTML = '<option>'+ data.main.pressure + '</option>';
+                })
+            }
+        </script>
+    
     <!--Google Map API Script-->
     <script>
-        function myMap() {
-            var mapLocale= {
-                center:new google.maps.LatLng(53.345300, -6.275769),
-                zoom:11,
+        
+        
+        var map, infoWindow, circle;
+      function myMap() {
+//        var lat_lng = {lat: 53.345300, lng: -6.275769};
+        map = new google.maps.Map(document.getElementById('google-map'), {
+          center: {lat: 53.345300, lng: -6.275769},
+          zoom: 11
+        });
+          
+        map1 = new google.maps.InfoWindow;
+        
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
             };
-            var map=new google.maps.Map(document.getElementById("google-map"),mapLocale);
-               
+
+            map1.setPosition(pos);
+            map1.setContent('You are here.');
+            map1.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, map1, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, map1, map.getCenter());
+        }
+      }
+        
+        google.maps.event.addListener(map1, 'click', function(event) {
+        placeMarker(event.latLng);
+        });
+
+        function placeMarker(location) {
+        var marker = new google.maps.Marker({
+            position: location, 
+            map: map1
+        });
+        }   
+       
+
+      function handleLocationError(browserHasGeolocation, map1, pos) {
+        map1.setPosition(pos);
+        map1.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        map1.open(map);
+      }     
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiubTHzeKWvkVLFSWQ1MY_7yNjizKQxbU&callback=myMap"></script>
+    
+    
+    
+<!-- Script to update map based on Route Selection -->
+    <script>
+        function changeMap() {
+//        var c = coords[route].split(',');
+//            map.setCenter(new google.maps.LatLng(c[0], c[1]));
+//       
+        var mapLocale= {
+            center:new google.maps.LatLng(53.345300, -6.275769),
+            zoom:11,
+        };
+        var map=new google.maps.Map(document.getElementById("google-map"),mapLocale);
+
         $.getJSON('../static/routes_and_stops.json', function(data){
         for (var i = 0; i < data.length; i++) {
         var item = data[i];
@@ -137,22 +213,6 @@
 }
         
     });
-//            $("#chosenroute").change(function() {
-//  var lat = $("#dropdown route_id:selected").data('latitude');
-//  var lng = $("#dropdown route_id:selected").data('longitude');
-//  changeLoc(latitude, longitude);
-//});
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiubTHzeKWvkVLFSWQ1MY_7yNjizKQxbU&callback=myMap"></script>
-    
-    
-    
-<!-- Script to update map based on Route Selection -->
-    <script>
-        function changeMap(route) {
-        var c = coords[route].split(',');
-            map.setCenter(new google.maps.LatLng(c[0], c[1]));
         }
     </script>
 
