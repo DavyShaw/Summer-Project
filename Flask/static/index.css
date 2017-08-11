@@ -3,28 +3,63 @@ html {
 }
 
 #header {
-    height: 40px;
+    height: 10%;
     margin: 30px auto;
     font-family: sans-serif;
-    text-align: center;
-    color: #3974FE;
+    text-align: left;
+    margin-left: 1.5%;
+    background-color: #87ABCF;
+    color: white;
+
 }
 
-body {
+#header img {
+    float: left;
+    width: 70px;
+    height: 70px;
+    border-radius: 25px;
+    margin-right: 2%;
+    margin-bottom: 1%;
+    
+}
 
+#clock {
+    float: right;
+    position: relative;
+    font-size: 20px;
+    margin-right: 2%;
+}
+
+#date {
+    float: right;
+    position: relative;
+    font-size: 20px;
+    margin-right: 2%;
 }
 
 #displaydiv {
     z-index: 5;
+/*    border-style: solid;*/
+    border-bottom: 2px;
     border-style: solid;
+/*    border-radius: 25px;*/
     padding-bottom: 5%;
-    margin-bottom: 2%;
+    padding-left: 3%;
+    margin-left: 4%;
+    margin-top: 4%;
+/*    margin-bottom: 2%;*/
+    padding-top: 2%;
+    width: 60%;
+}
+
+#displaydiv h3 {
+    font-family: sans-serif;
+    
 }
 #wrapper {
     width: 100%;
     height: 100%;
     position: relative;
-
 }
 
 #google-map {
@@ -33,17 +68,19 @@ body {
     display: inline-block;
     margin-left: 1.5%;
     margin-right:1.5%;
+    z-index: 2;
 }
 
 #weather {
     width: 15%;
-    margin-left: 80%;
+    margin-left: 83%;
     position: absolute;
-    z-index: 2;
-    top: 10px;
+    z-index: 3;
+    top: 3px;
     text-align: center;
     border-style: solid;
     border-radius: 25px;
+    border-color: white;
     background-color: white;
     background: rgba(76, 175, 80, 0.3);
 /*    opacity: 0.2;*/
@@ -54,12 +91,23 @@ body {
     z-index: 3;
 }
 
-#live_weather {
-    
+#dropdowns {
+    border-style: solid;
+    padding-left: 10px;
+    border-radius: 25px;
+    border-color: white;
+    float: left;
+    z-index: 4;
+    position: absolute;
+    left: 23px;
+    top: 365px;
+    background: rgba(200, 200, 255, 0.8);
 }
 
-#dropdowns {
-
+#twitterfeed {
+    width: 30%;
+    height: 500px;
+    float: right;
 }
 
 #footer {
