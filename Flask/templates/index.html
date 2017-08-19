@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Dublin Bus Dynamic Time Application</title>
-        <link rel="stylesheet" type="text/css" href="../static/index.css?q=500">
+        <link rel="stylesheet" type="text/css" href="../static/index.css?q=503330">
 <!--        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">-->
     </head>
     <body id="body" onload="api(); api2(); startTime();">
@@ -103,20 +103,15 @@
             
             <div id="googlecharts">
             
-            <h2>Google Chart Visualisations</h2></div>
+            <h2>Google Chart Visualisations  {{ chosentime }}</h2>
+                        </div>
             <div id="twitterfeed">
                 <a class="twitter-timeline" href="https://twitter.com/aaroadwatch" height="500">Tweets by aaroadwatch</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
 
             
             </div> 
-<!--
-            Footer
-            <footer id="footer">
-                <p>Team Members: Davy Shaw, Aongus Bates, Claudia Kinsella, Chen Zeng</p>
-            </footer>
-        
--->
+
     </body>
     
     
@@ -290,8 +285,7 @@
         })(data[i]);
          }
         
-    }); 
-            
+    });   
        
         }   
      
