@@ -116,8 +116,10 @@
     width: 60%;
     height: 500px;
     float: left;
+/*
     border-style: dotted;
     border-color: white;
+*/
 }
 
 #footer {
